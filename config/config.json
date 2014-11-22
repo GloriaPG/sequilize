@@ -1,0 +1,23 @@
+{
+  "development": {
+    "user": "root",
+    "password": "vinco",
+    "database": "md",
+    "host": "localhost",
+    "driver": "mysql"
+  },
+  "test": {
+    "user": "root",
+    "password": null,
+    "database": "md",
+    "host": "localhost",
+    "driver": "mysql"
+  },
+  "production": {
+    "user": "root",
+    "password": null,
+    "database": "md",
+    "host": "localhost",
+    "driver": "mysql"
+  }
+}

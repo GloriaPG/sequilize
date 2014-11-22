@@ -1,0 +1,22 @@
+{
+  "name": "manoderecha-sequelize",
+  "version": "0.0.1",
+  "description": "Web App para administración de proyectos",
+  "author": "VO",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "^1.9.2",
+    "debug": "^2.1.0",
+    "express": "^4.10.2",
+    "morgan": "^1.5.0",
+    "mysql": "^2.5.3",
+    "sequelize": "^2.0.0-rc2",
+    "sequelize-cli": "^0.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.2.1"
+  }
+}
