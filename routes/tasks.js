@@ -11,12 +11,12 @@ router.route('/tasks')
 		, petitioner_id = req.body.petitioner_id
 		, priority_id 	= req.body.priority_id
 		, creator_id 	= req.body.creator_id
-		, group_id 	= req.body.group_id
+		, group_id 		= req.body.group_id
 		, petition_id 	= req.body.petition_id
 		, task_source_id = req.body.task_source_id
 		, concept 		= req.body.concept
 		, description 	= req.body.description
-		, creation 	= req.body.creation
+		, creation 		= req.body.creation
 		, start_date 	= req.body.start_date
 		, delivery_date = req.body.delivery_date
 		, estimated_time = req.body.estimated_time
@@ -28,9 +28,9 @@ router.route('/tasks')
 		, gantt_start_date = req.body.gantt_start_date
 		, gantt_completion_date = req.body.gantt_completion_date;
 
-		var task = models.tasks.build({ project_id: project_id, status_id: status_id, responsible_id: responsible_id, petitioner_id: petitioner_id, priority_id: priority_id, creator_id: creator_id, group_id: group_id, petition_id: petition_id, task_source_id: task_source_id, concept: concept, description: description, creation: creation, start_date: start_date, delivery_date: delivery_date, estimated_time: estimated_time, chargeable: chargeable, visible: visible, inside_description: inside_description, payable: payable, locked: locked, gantt_start_date: gantt_start_date, gantt_completion_date: gantt_completion_date });
+		var task = models.task.build({ project_id: project_id, status_id: status_id, responsible_id: responsible_id, petitioner_id: petitioner_id, priority_id: priority_id, creator_id: creator_id, group_id: group_id, petition_id: petition_id, task_source_id: task_source_id, concept: concept, description: description, creation: creation, start_date: start_date, delivery_date: delivery_date, estimated_time: estimated_time, chargeable: chargeable, visible: visible, inside_description: inside_description, payable: payable, locked: locked, gantt_start_date: gantt_start_date, gantt_completion_date: gantt_completion_date });
 
-		task.add(
+		task.create(
 			function(success){
 				res.json({message: 'La tarea se ha guardado correctamente.'});
 			},
@@ -38,14 +38,12 @@ router.route('/tasks')
 				res.send(err);
 			}
 		);
-
 	})
 
 	.get(function(req, res) {
-		var task = models.tasks.build();
+		var task = models.task.build();
 
-		task.retrieveAll(
-			function(tasks) {
+		task.find(req.query, function(tasks) {
 				if(tasks) {
 					res.json(tasks);
 				} else {
@@ -60,7 +58,7 @@ router.route('/tasks')
 
 router.route('/tasks/:task_id')
 	.put(function(req, res) {
-		var task = models.tasks.build();
+		var task = models.task.build();
 
 		task.project_id 	= req.body.project_id;
 		task.status_id 	= req.body.status_id;
@@ -94,13 +92,12 @@ router.route('/tasks/:task_id')
 		}, function(error) {
 			res.send(error);
 		});
-
 	})
 
 	.get(function(req, res) {
-		var task = models.tasks.build();
+		var task = models.task.build();
 
-		task.retrieveById(req.params.task_id, function(task) {
+		task.findById(req.params.task_id, req.query, function(task) {
 			if(task) {
 				res.json(task);
 			} else {
@@ -112,7 +109,7 @@ router.route('/tasks/:task_id')
 	})
 
 	.delete(function(req, res) {
-		var task = models.tasks.build();
+		var task = models.task.build();
 
 		task.removeById(req.params.task_id, function(task) {
 			if(task) {
@@ -125,4 +122,4 @@ router.route('/tasks/:task_id')
 		});
 	});
 
-	module.exports = router;
+module.exports = router;

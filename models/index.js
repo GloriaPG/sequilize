@@ -2,11 +2,11 @@
 
 "use strict";
 
-var fs        = require("fs");
-var path      = require("path");
 var Sequelize = require("sequelize");
 var env       = process.env.NODE_ENV || "development";
 var config    = require(__dirname + '/../config/config.json')[env];
+
+// initialize database connection
 var sequelize = new Sequelize(
 	config.database,
 	config.user,
@@ -15,23 +15,32 @@ var sequelize = new Sequelize(
 		dialect: config.driver,
 		logging: console.log,
 		define: {
-			timestamps: false
+			timestamps: true,
+			underscored: true,
+			charset: 'utf8',
+			collate: 'utf8_general_ci',
+			freezeTableName: true,
 		}
 	}
-	);
-var db        = {};
+);
 
-fs
-.readdirSync(__dirname)
-.filter(function(file) {
-	return (file.indexOf(".") !== 0) && (file !== "index.js");
-})
-.forEach(function(file) {
-	var model = sequelize["import"](path.join(__dirname, file));
-	db[model.name] = model;
+// Export model
+var models = [
+	'project',
+	'task',
+	'user'
+];
+
+models.forEach(function(model){
+	module.exports[model] = sequelize.import(__dirname + '/' + model);
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+module.exports.project.hasOne(module.exports.task);
+module.exports.user.hasOne(module.exports.task, { foreignKey: 'responsible_id'});
+module.exports.user.hasOne(module.exports.task, { foreignKey: 'petitioner_id'});
+module.exports.user.hasOne(module.exports.task, { foreignKey: 'creator_id'});
+//module.exports.status.hasOne(module.exports.task);
+//module.exports.priority.hasOne(module.exports.task);
+//module.exports.group.hasOne(module.exports.task);
 
-module.exports = db;
+module.exports.sequelize = sequelize;

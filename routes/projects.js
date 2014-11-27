@@ -17,9 +17,9 @@ router.route('/projects')
 		, has_been_inactive = req.body.has_been_inactive
 		, description = req.body.description;
 
-		var project = models.projects.build({ project: name, start_date: start_date, end_date: end_date, status_id: status_id, key: key, is_template: is_template, conclusion_requirements: conclusion_requirements, invoiced_by: invoiced_by, default_ticket: default_ticket, has_been_inactive: has_been_inactive, description: description });
+		var project = models.project.build({ project: name, start_date: start_date, end_date: end_date, status_id: status_id, key: key, is_template: is_template, conclusion_requirements: conclusion_requirements, invoiced_by: invoiced_by, default_ticket: default_ticket, has_been_inactive: has_been_inactive, description: description });
 
-		project.add(
+		project.create(
 			function(success) {
 				res.json({message: 'El proyecto se ha guardado correctamente.'});
 			},
@@ -30,8 +30,8 @@ router.route('/projects')
 	})
 
 	.get(function(req, res) {
-		var project = models.projects.build();
-		project.retrieveAll(
+		var project = models.project.build();
+		project.find(
 			function(projects) {
 				if(projects) {
 					res.json(projects);
@@ -47,7 +47,7 @@ router.route('/projects')
 
 router.route('/projects/:project_id')
 	.put(function(req, res) {
-		var project = models.projects.build();
+		var project = models.project.build();
 
 		project.project = req.body.project;
 		project.start_date = req.body.start_date;
@@ -62,7 +62,7 @@ router.route('/projects/:project_id')
 		project.description = req.body.description;
 
 		project.updateById(req.params.project_id, function(success) {
-			if (success) {
+			if(success) {
 				res.json({ message: 'El proyecto se ha actualizado correctamente.' });
 			} else {
 				res.send(401, "El proyecto que desea actualizar no existe.");
@@ -74,13 +74,13 @@ router.route('/projects/:project_id')
 	})
 
 	.get(function(req, res) {
-		var project = models.projects.build();
+		var project = models.project.build();
 
-		project.retrieveById(req.params.project_id, function(project) {
-			if (project) {
+		project.findById(req.params.project_id, function(project) {
+			if(project) {
 				res.json(project);
 			} else {
-				res.send(401, "El proyecto no existe.");
+				res.send(400, "El proyecto no existe.");
 			}
 		}, function(error) {
 			res.send(error);
@@ -88,10 +88,10 @@ router.route('/projects/:project_id')
 	})
 
 	.delete(function(req, res) {
-		var project = models.projects.build();
+		var project = models.project.build();
 
 		project.removeById(req.params.project_id, function(users) {
-			if (users) {
+			if(users) {
 				res.json({ message: 'El proyecto se ha eliminado correctamente.' });
 			} else {
 				res.send(401, "El proyecto que desea borrar no existe.");

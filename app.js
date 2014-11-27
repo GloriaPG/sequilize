@@ -6,17 +6,17 @@ var express 	= require('express')
 , bodyParser 	= require('body-parser')
 , app 			= express();
 
-var users  		= require('./routes/users');
-var projects 	= require('./routes/projects');
-var tasks 		= require('./routes/tasks');
+var user  		= require('./routes/users');
+var project 	= require('./routes/projects');
+var task 		= require('./routes/tasks');
 
 app.use(debug('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/api/v1', users);
-app.use('/api/v1', projects);
-app.use('/api/v1', tasks);
+app.use('/api/v1', user);
+app.use('/api/v1', project);
+app.use('/api/v1', task);
 
 app.use(function(req, res, next) {
 	var err = new Error('Not Found');

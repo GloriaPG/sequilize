@@ -14,7 +14,8 @@
     "morgan": "^1.5.0",
     "mysql": "^2.5.3",
     "sequelize": "^2.0.0-rc2",
-    "sequelize-cli": "^0.3.3"
+    "sequelize-cli": "^0.3.3",
+    "underscore": "^1.7.0"
   },
   "devDependencies": {
     "nodemon": "^1.2.1"

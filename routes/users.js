@@ -11,9 +11,9 @@ router.route('/users')
 		, is_active = req.body.is_active
 		, created_at= req.body.created_at;
 
-		var user = models.users.build({ name: name, mail: mail, is_active: is_active, created_at: created_at });
+		var user = models.user.build({ name: name, mail: mail, is_active: is_active, created_at: created_at });
 
-		user.add(
+		user.create(
 		function(success){
 			res.json({ message: 'El usuario se ha creado correctamente.' });
 		},
@@ -23,11 +23,11 @@ router.route('/users')
 	})
 
 	.get(function(req, res) {
-		var user = models.users.build();
+		var user = models.user.build();
 
-		user.retrieveAll(
+		user.find(
 		function(users) {
-			if (users) {
+			if(users) {
 				res.json(users);
 			} else {
 				res.send(401, "El listado de usuarios se ha cargado correctamente.");
@@ -40,7 +40,7 @@ router.route('/users')
 
 router.route('/users/:user_id')
 	.put(function(req, res) {
-		var user = models.users.build();
+		var user = models.user.build();
 
 		user.name = req.body.name;
 		user.mail = req.body.mail;
@@ -48,7 +48,7 @@ router.route('/users/:user_id')
 		user.created_at = req.body.created_at;
 
 		user.updateById(req.params.user_id, function(success) {
-			if (success) {
+			if(success) {
 				res.json({ message: 'El usuario se ha actualizado correctamente.' });
 			} else {
 				res.send(401, "El usuario que desea actualizar no existe.");
@@ -59,10 +59,10 @@ router.route('/users/:user_id')
 	})
 
 	.get(function(req, res) {
-		var user = models.users.build();
+		var user = models.user.build();
 
-		user.retrieveById(req.params.user_id, function(user) {
-			if (user) {
+		user.findById(req.params.user_id, function(user) {
+			if(user) {
 				res.json(user);
 			} else {
 				res.send(401, "El usuario no existe.");
@@ -73,7 +73,7 @@ router.route('/users/:user_id')
 	})
 
 	.delete(function(req, res) {
-		var user = models.users.build();
+		var user = models.user.build();
 
 		user.removeById(req.params.user_id, function(users) {
 			if (users) {
