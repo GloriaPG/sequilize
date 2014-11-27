@@ -32,9 +32,9 @@ module.exports = function (sequelize, DataTypes) {
 	}, {
 		instanceMethods: {
 			find: function(queryString, onSuccess, onError) {
-				var groupBy, fields, limit, offset;
+				var groupBy, fields, limit, offset, orderBy;
 
-				if(!_.isEmpty(queryString.fields)) {
+				if(!_.isEmpty(queryString.fields)){
 					fields = queryString.fields.split(",");
 				};
 
@@ -53,7 +53,7 @@ module.exports = function (sequelize, DataTypes) {
 				if(!_.isEmpty(queryString.orderBy)){
 					orderBy = queryString.orderBy;
 				} else {
-					orderBy = 'concept';
+					orderBy = 'id';
 				}
 
 				Task.findAll(
@@ -63,7 +63,7 @@ module.exports = function (sequelize, DataTypes) {
 						offset: offset,
 						limit: limit,
 						group: groupBy
-					}, {raw: true}).success(onSuccess).error(onError);
+					}, { raw: true }).success(onSuccess).error(onError);
 			},
 			findById: function(taskId, queryString, onSuccess, onError) {
 

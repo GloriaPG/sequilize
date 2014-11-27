@@ -2,6 +2,8 @@
 
 "use strict"
 
+var models  = require('../models');
+
 module.exports = function (sequelize, DataTypes) {
 	var Project = sequelize.define('project', {
 		id: 			{ type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true }
@@ -88,6 +90,13 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			removeById: function(projectId, onSuccess, onError) {
 				Project.destroy({where: {id: projectId}}).success(onSuccess).error(onError);
+			},
+			findTask: function(projectId, onSuccess, onError) {
+				Project.findAll(
+					{
+						where: { id: projectId },
+						include : [ models.task]
+					}).success(onSuccess).error(onError);
 			}
 		}
 	});

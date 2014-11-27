@@ -1,7 +1,8 @@
 /*projects.js*/
-var models  = require('../models');
-var express = require('express');
-var router  = express.Router();
+var models  = require('../models')
+, express 	= require('express')
+, _ 		= require('underscore')
+, router  	= express.Router();
 
 router.route('/projects')
 	.post(function(req, res) {
@@ -31,8 +32,7 @@ router.route('/projects')
 
 	.get(function(req, res) {
 		var project = models.project.build();
-		project.find(
-			function(projects) {
+		project.find(function(projects) {
 				if(projects) {
 					res.json(projects);
 				} else {
@@ -98,6 +98,35 @@ router.route('/projects/:project_id')
 			}
 		}, function(error) {
 			res.send(error);
+		});
+	});
+
+/* To-Do */
+router.route('/projects/:project_id/tasks')
+	.get(function(req, res){
+		var project = models.project.build(), tasks = [], response = null;
+
+		project.findTask(req.params.project_id, function(projectTasks) {
+			if(projectTasks) {
+
+				_.each(projectTasks, function(value, key) {
+					tasks.push(value.task);
+				});
+
+				response = {
+					id: projectTasks[0].id,
+					key: projectTasks[0].key,
+					project: projectTasks[0].project,
+					invoiced_by: projectTasks[0].invoiced_by,
+					start_date: projectTasks[0].start_date,
+					description: projectTasks[0].description
+				};
+
+				response['tasks'] = tasks;
+				res.json(response);
+			} else {
+				res.send(400, 'Algo salió mal.');
+			};
 		});
 	});
 
