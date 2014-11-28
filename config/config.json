@@ -1,7 +1,7 @@
 {
   "development": {
     "user": "root",
-    "password": "basi1985",
+    "password": "vagrant",
     "database": "md",
     "host": "localhost",
     "driver": "mysql"
